@@ -25,7 +25,7 @@ This repository provides a verified, "loop-free" configuration for **KAMP (Klipp
 This setup modifies the physical travel limits of the K1 Max to accommodate the CR-Touch sensor and the CFS system. **Do not use these values without verifying your physical clearances!**
 
 ### 📍 CR-Touch Offsets (In printer.cfg)
-The `[bltouch]` section has been tuned for the specific CR-Touch mount. 
+The `[bltouch]` section has been tuned for the specific CR-Touch mount (https://www.printables.com/model/1073375-cr-touch-mount-k1-k1maxk1c-zero-y-offset). 
 * **Note:** Ensure your `x_offset` and `y_offset` match your specific printed bracket.
 
 ### 📏 Stepper Limit Changes
