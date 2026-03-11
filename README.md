@@ -23,12 +23,17 @@ This repository contains a fully tested, "production-ready" configuration for th
 
 ## 📥 Installation
 
-1. **Mount the Hardware:** Print and install the CR-Touch using the [Printables mount](https://www.printables.com/model/1073375-cr-touch-mount-k1-k1maxk1c-zero-y-offset).
-2. **Upload Configs:** Place the `KAMP` and `Config_Files` folders into your `/usr/data/printer_data/config/` directory.
-3. **Link to printer.cfg:** Add this line to your main `printer.cfg`:
+1. Prerequisite: Root & Helper Script
+   Before using this fix, your K1 Max must be rooted and have the **Creality Helper Script** installed. 
+   * Follow the official guide here: [Creality Helper Script Installation](https://guilouz.github.io/Creality-Helper-Script-Wiki/helper-script/helper-script-installation/)
+2. Apply the Fix
+   Once the Helper Script has set up the basic environment, use the files in this repository to overwrite the default KAMP configurations to enable CFS and CR-Touch support.
+3. **Mount the Hardware:** Print and install the CR-Touch using the [Printables mount](https://www.printables.com/model/1073375-cr-touch-mount-k1-k1maxk1c-zero-y-offset).
+4. **Upload Configs:** Place the `KAMP` and `Config_Files` folders into your `/usr/data/printer_data/config/` directory.
+5. **Link to printer.cfg:** Add this line to your main `printer.cfg`:
    ```gcode
    [include /usr/data/printer_data/config/KAMP/KAMP_Settings.cfg]
-4. **Slicer Setup:** * Enable **Exclude Objects** in OrcaSlicer or Creality Print.
+6. **Slicer Setup:** * Enable **Exclude Objects** in OrcaSlicer or Creality Print.
    * Set your **Machine Start G-Code** to:
    ```gcode
    START_PRINT EXTRUDER_TEMP=[nozzle_temperature_initial_layer] BED_TEMP=[bed_temperature_initial_layer]
