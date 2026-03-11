@@ -34,3 +34,16 @@ We adjusted `position_max` and `position_endstop` in the `[stepper_x]` and `[ste
 
 ### 📦 CFS Integration (box.cfg)
 The `box.cfg` file contains the essential logic for the **Creality Filament System**. This ensures that filament loading/unloading doesn't conflict with KAMP's adaptive purging.
+
+
+⚠️ Disclaimer
+IMPORTANT: The configuration files in this repository involve modifications to the physical travel limits (position_max) and sensor offsets of the Creality K1 Max. Every machine is slightly different. While these files work perfectly for my CR-Touch + CFS setup, you must manually verify that your toolhead does not hit the frame or clips before running a full-speed print. I am not responsible for any hardware damage.
+
+🔍 Post-Installation Checklist
+After applying these printer.cfg changes, perform these tests:
+
+The Paper Test: Re-calibrate your Z-Offset. The CR-Touch sits at a different height than the stock sensor.
+
+Slow Homing: Home the printer with your hand on the Power Switch (or Emergency Stop in Mainsail/Fluidd). Ensure X and Y don't grind against the rails.
+
+Bed Mesh Check: Run a BED_MESH_CALIBRATE and watch the CR-Touch. Ensure the probe doesn't jump off the edge of the bed at its furthest points.
