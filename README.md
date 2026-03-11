@@ -47,7 +47,8 @@ gcode:
     BED_MESH_CALIBRATE          # KAMP Adaptive Meshing
     SMART_PARK                  # KAMP Smart Park near object
     M109 S{EXTRUDER_TEMP}       # Wait for nozzle
-    LINE_PURGE                  # KAMP Adaptive Purge (CFS Priming)```
+    LINE_PURGE                  # KAMP Adaptive Purge (CFS Priming)
+```
 
 ## ⚠️ Disclaimer & Safety
 **USE AT YOUR OWN RISK.** This setup modifies physical travel limits.
