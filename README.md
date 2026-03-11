@@ -63,6 +63,29 @@ gcode:
 ---
 **Credits:** Created to help the K1 Max community integrate KAMP, CFS, and CR-Touch sensors seamlessly.
 
+## 🧪 How to Test Your Setup
+Before running your first full print, follow these three steps to ensure the CFS and KAMP are communicating correctly.
+
+### 1. Verify Macro Visibility
+In your Klipper Console (Mainsail/Fluidd), type the following commands one by one. If you don't get an "Unknown command" error, the setup is working:
+* `LINE_PURGE`
+* `SMART_PARK`
+
+### 2. The "Dry Run" Home & Park
+1. Clear the bed of any objects.
+2. Run a `G28` to home the printer.
+3. Run `SMART_PARK`. 
+   * **Success:** The toolhead should move to the center of the bed and stay at a safe height. This verifies your stepper limits and offsets are correct for the **Zero-Y Mount**.
+
+### 3. CFS Prime & Purge Test
+1. Load filament into the **CFS**.
+2. Run a small 20mm x 20mm calibration cube in your slicer.
+3. Watch the start sequence:
+   * **Adaptive Mesh:** Does the CR-Touch only probe the area where the cube will be?
+   * **Purge Location:** Does the `LINE_PURGE` happen near the cube rather than at the back of the bed?
+   * **CFS Timing:** Does the nozzle wait for the filament to arrive from the CFS before it starts the purge line?
+
+---
 
 ## 📜 Change Log
 
