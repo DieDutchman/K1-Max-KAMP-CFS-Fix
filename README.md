@@ -57,3 +57,17 @@ gcode:
 
 ---
 **Credits:** Created to help the K1 Max community integrate KAMP, CFS, and CR-Touch sensors seamlessly.
+
+
+## 📜 Change Log
+
+### [2026-03-11] - The "CFS & CR-Touch" Stability Release
+- **Added:** Full CFS (Creality Filament System) integration logic.
+- **Added:** Support for Zero Y-Offset CR-Touch mounts.
+- **Fixed:** Resolved `Key 172` recursion error in `LINE_PURGE`.
+- **Fixed:** Resolved `Key 61` unknown command error for `SMART_PARK`.
+- **Updated:** Modified `printer.cfg` stepper limits to prevent frame collisions with the new probe mount.
+- **New:** Included dummy `CX_PRINT_DRAW_ONE_LINE` macro to bypass factory g-code conflicts.
+
+---
+*Future updates will be logged here.*
