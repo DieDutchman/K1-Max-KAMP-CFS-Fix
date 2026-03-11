@@ -1,49 +1,62 @@
-# 🚀 KAMP Fix for Creality K1 Max (CFS + CR-Touch Optimized)
+🚀 K1 Max Ultimate Setup: KAMP + CFS + Zero Y-Offset CR-Touch
+This repository contains a fully tested, "production-ready" configuration for the Creality K1 Max. It solves the notorious Key 61, Key 60, and Key 172 errors that occur when combining KAMP with the rooted Helper Script.
 
-This repository provides a verified, "loop-free" configuration for **KAMP (Klipper Adaptive Meshing & Purging)** on the Creality K1 Max. 
+🛠️ Hardware Requirements
+Printer: Creality K1 Max
 
-## 🛠️ Hardware Setup
-- **Printer:** Creality K1 Max
-- **Probe:** CR-Touch (Modified Mount)
-- **AMS:** CFS (Creality Filament System)
-- **Firmware:** Rooted Klipper (Helper Script based)
+AMS: CFS (Creality Filament System)
 
-## ❌ Errors This Fixes
-- **Key 61:** "Unknown command: LINE_PURGE" 
-- **Key 172:** "Macro LINE_PURGE called recursively" (Infinite loop crash)
-- **Internal Error:** `CX_PRINT_DRAW_ONE_LINE` conflicts.
+Probe: CR-Touch using this Zero Y-Offset Mount.
 
-## 📥 Installation
+Note: Using a Zero Y-Offset mount significantly improves bed mesh accuracy.
 
-1. Download this repository and upload the files to your `/usr/data/printer_data/config/KAMP/` directory.
-2. In your main **`printer.cfg`**, you only need to add this one line if it is not already there:
-   ```gcode
-   [include Helper-Script/KAMP/KAMP_Settings.cfg]
-   
-## ⚠️ Critical Hardware Settings (CR-Touch & Stepper Limits)
+📁 Repository Structure
+/KAMP: Contains adaptive meshing, smart parking, and the fixed Line_Purge_CRTouch.cfg.
 
-This setup modifies the physical travel limits of the K1 Max to accommodate the CR-Touch sensor and the CFS system. **Do not use these values without verifying your physical clearances!**
+/Config_Files:
 
-### 📍 CR-Touch Offsets (In printer.cfg)
-The `[bltouch]` section has been tuned for the specific CR-Touch mount (https://www.printables.com/model/1073375-cr-touch-mount-k1-k1maxk1c-zero-y-offset). 
-* **Note:** Ensure your `x_offset` and `y_offset` match your specific printed bracket.
+printer.cfg: Includes tuned stepper limits and [bltouch] offsets for the Zero-Y mount.
 
-### 📏 Stepper Limit Changes
-We adjusted `position_max` and `position_endstop` in the `[stepper_x]` and `[stepper_y]` sections. 
-* This prevents the toolhead from crashing into the frame now that the CR-Touch adds extra width/depth to the assembly.
+box.cfg: Essential logic for the CFS integration.
 
-### 📦 CFS Integration (box.cfg)
-The `box.cfg` file contains the essential logic for the **Creality Filament System**. This ensures that filament loading/unloading doesn't conflict with KAMP's adaptive purging.
+gcode.macro.cfg: Custom macros including the CX_PRINT_DRAW_ONE_LINE fix.
 
+❌ Resolved Issues
+Key 61 (Unknown Command): Fixed by promoting macros from private (_) to public and using absolute include paths.
 
-⚠️ Disclaimer
-IMPORTANT: The configuration files in this repository involve modifications to the physical travel limits (position_max) and sensor offsets of the Creality K1 Max. Every machine is slightly different. While these files work perfectly for my CR-Touch + CFS setup, you must manually verify that your toolhead does not hit the frame or clips before running a full-speed print. I am not responsible for any hardware damage.
+Key 172 (Recursion Error): Fixed the infinite loop in LINE_PURGE by removing self-referencing calls.
 
-🔍 Post-Installation Checklist
-After applying these printer.cfg changes, perform these tests:
+Key 60 (Internal Error): Resolved conflicts between KAMP and the factory CX_PRINT_DRAW_ONE_LINE macro.
 
-The Paper Test: Re-calibrate your Z-Offset. The CR-Touch sits at a different height than the stock sensor.
+CFS Priming: Optimized the purge sequence to ensure the CFS is fully primed near the print area.
 
-Slow Homing: Home the printer with your hand on the Power Switch (or Emergency Stop in Mainsail/Fluidd). Ensure X and Y don't grind against the rails.
+📥 Installation
+Mount the Hardware: Print and install the CR-Touch using the Printables link.
 
-Bed Mesh Check: Run a BED_MESH_CALIBRATE and watch the CR-Touch. Ensure the probe doesn't jump off the edge of the bed at its furthest points.
+Upload Configs: Place the KAMP and Config_Files folders into your /usr/data/printer_data/config/ directory.
+
+Link to printer.cfg: Add this line to your main printer.cfg:
+
+G-Code
+[include /usr/data/printer_data/config/KAMP/KAMP_Settings.cfg]
+Slicer Setup: Enable Exclude Objects in OrcaSlicer or Creality Print and set your Start G-Code to:
+
+G-Code
+START_PRINT EXTRUDER_TEMP=[nozzle_temperature_initial_layer] BED_TEMP=[bed_temperature_initial_layer]
+⚠️ Disclaimer & Safety
+USE AT YOUR OWN RISK. This setup modifies physical travel limits.
+
+Verify Limits: Move your toolhead manually to X0 Y0 and X300 Y300 to ensure the CR-Touch doesn't hit the frame.
+
+Z-Offset: You must calibrate your Z-Offset after installing the new mount before your first print.
+
+How to use this for your GitHub:
+Go to your GitHub repo.
+
+Click the Edit (pencil) icon on README.md.
+
+Delete everything and paste the text above.
+
+Commit changes.
+
+This looks like a professional-grade resource now! Would you like me to help you double-check the x_offset and y_offset values in your printer.cfg to make sure they match that specific "Zero Y" mount before you upload?
