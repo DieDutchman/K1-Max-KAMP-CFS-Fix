@@ -38,28 +38,31 @@ SYNC_SPOOLMAN SLOT=[next_extruder]
   BOX_LOAD_MATERIAL_WITH_MATERIAL TNN=T2B
 {endif}
 ```
+
 ### 3. Hardware Calibration (Zero-Y Mount)
 If you are using a Zero-Y offset mount:
+* **Z-Offset:** Live-adjust your Z-offset during your first test print. Once perfected, run `SAVE_CONFIG` in the console.
+* **PTFE Slack:** Ensure the PTFE tube leading from the CFS to the toolhead has enough slack to prevent the tube from pulling on the toolhead at the front of the bed, which can cause Z-offset inconsistencies.
 
-Z-Offset: Live-adjust your Z-offset during your first test print. Once perfected, run SAVE_CONFIG in the console.
+---
 
-PTFE Slack: Ensure the PTFE tube leading from the CFS to the toolhead has enough slack to prevent the tube from pulling on the toolhead at the front of the bed, which can cause Z-offset inconsistencies.
+## 📜 Custom Macros
 
-Command,Description
-MAP_ALL_SPOOLS,"Manually assign Spoolman IDs to CFS slots (e.g., MAP_ALL_SPOOLS SLOT0=12 SLOT1=5)."
-STATUS_SPOOL_MAP,Prints the current CFS-to-Spoolman ID assignments in the console.
-SYNC_SPOOLMAN,Manually triggers an active spool update in the Spoolman database for a specific slot.
-CLEAR_CFS_SPOOLS,Resets all slot assignments to 0.
+| Command | Description |
+| :--- | :--- |
+| `MAP_ALL_SPOOLS` | Manually assign Spoolman IDs to CFS slots (e.g., `MAP_ALL_SPOOLS SLOT0=12 SLOT1=5`). |
+| `STATUS_SPOOL_MAP` | Prints the current CFS-to-Spoolman ID assignments in the console. |
+| `SYNC_SPOOLMAN` | Manually triggers an active spool update in the Spoolman database for a specific slot. |
+| `CLEAR_CFS_SPOOLS` | Resets all slot assignments to 0. |
 
-🤝 Credits & Acknowledgments
-Guilouz - Creality K1 Series Helper Script
+---
 
-Donkie - Spoolman
+## 🤝 Credits & Acknowledgments
+* **[Guilouz - Creality K1 Series Helper Script](https://github.com/Guilouz/Creality-K1-Series-Helper-Script)**
+* **[Donkie - Spoolman](https://github.com/Donkie/Spoolman)**
+* **[kageiit - KAMP](https://github.com/kageiit/Klipper-Adaptive-Mesh-Purging)**
+* **[Creality Official Klipper Repo](https://github.com/CrealityOfficial)**
 
-kageiit - KAMP
-
-Creality Official Klipper Repo
-
-🚀 Status: Feature Complete & Stable
+---
+### 🚀 Status: Feature Complete & Stable
 The "Key 60" error is resolved by moving tool-change logic from Klipper macros to the Slicer's conditional G-code.
-
