@@ -1,65 +1,65 @@
-# Creality K1 Max + CFS: Ultimate Hardware & Software Integration
+# Creality K1 Max + CFS: Hardware Optimization & Spoolman Integration
 
-This repository contains my optimized configuration for the **Creality K1 Max** and **CFS (Creality Filament System)**. It bridges the gap between factory firmware and professional-grade Klipper features, specifically for users running rooted setups with the Creality Helper Script.
+This repository contains an optimized configuration for the **Creality K1 Max** and **CFS (Creality Filament System)**. This setup is specifically designed to bypass the common "Key 60" firmware error by using direct Slicer-to-CFS communication while maintaining full **Spoolman** database synchronization.
 
 ## 🚀 Key Features
-* **Zero-Y CR-Touch Integration:** Correctly configured offsets for the Zero-Y mount to ensure perfect bed meshing.
-* **Spoolman Automation:** Real-time filament tracking that deducts usage automatically during multicolor prints.
-* **UI-Driven Mapping:** A custom "Master Form" macro to set all 4 CFS slots at once via the dashboard pop-up.
-* **Error-Free Toolchanging:** Custom `SELECT_T` logic to prevent `Key 57` and `Key 167` firmware conflicts.
-* **KAMP (Klipper Adaptive Mesh & Purge):** Adaptive leveling for faster, more accurate print starts.
+* **Zero-Y CR-Touch Integration:** Specific offsets for the Zero-Y mount to ensure perfect bed meshing and first-layer consistency.
+* **Spoolman Automation:** Real-time filament consumption tracking and active spool marking in your Spoolman database.
+* **Key 60 Bypass:** Uses conditional Slicer G-code to call native CFS commands directly, avoiding Klipper "Internal Error" crashes caused by nested macros.
+* **KAMP (Klipper Adaptive Mesh & Purge):** Integrated support for smart leveling and purging.
 
 ---
 
 ## 🛠️ Installation & Setup
 
-### 1. Hardware Calibration (Zero-Y Mount)
-If you are using the Zero-Y offset mount, you must ensure your Z-offset is saved to avoid collisions:
-1. Start a test print.
-2. Live-adjust your Z-offset via the dashboard until the first layer is perfect.
-3. **Crucial:** Run `SAVE_CONFIG` in the console. This moves the offset from the temporary state to your `printer.cfg`.
+### 1. Klipper Configuration
+1. Upload `spoolman_cfs.cfg` to your printer's configuration folder.
+2. In your `printer.cfg`, add the following line: 
+   `[include spoolman_cfs.cfg]`
+3. Ensure your `moonraker.conf` is configured to communicate with your Spoolman server.
 
-### 2. Slicer Configuration
-Update your filament change G-code in **OrcaSlicer** (or your preferred slicer) to talk to the new macros:
-* **Printer Settings** > **Machine G-code** > **Change filament G-code**:
-    ```gcode
-    SELECT_T[next_extruder]
-    ```
+### 2. OrcaSlicer Setup (Required for CFS Stability)
+To prevent the `Key 60` internal error, this setup bypasses the use of `SELECT_T` macros in favor of direct calls. 
 
-### 3. Spoolman Mapping
-* **Session Mapping:** Click the `MAP_ALL_SPOOLS` button in your macro panel to assign IDs for your current project.
-* **Persistent Mapping:** For filaments you leave in the CFS long-term, edit the top of `spoolman_cfs.cfg` so they load automatically on restart:
-    ```gcode
-    variable_slot0_id: 12  # Set your most-used Spool ID here
-    ```
+In OrcaSlicer, navigate to **Printer Settings** > **Machine G-code** > **Change filament G-code** and paste:
 
----
+```gcode
+; Update Spoolman Data
+SYNC_SPOOLMAN SLOT=[next_extruder]
 
-## 📜 Custom Macros & Commands
+; Trigger Native CFS Load (Direct Call to bypass Key 60)
+{if next_extruder == 0}
+  BOX_LOAD_MATERIAL_WITH_MATERIAL TNN=T1A
+{elsif next_extruder == 1}
+  BOX_LOAD_MATERIAL_WITH_MATERIAL TNN=T1B
+{elsif next_extruder == 2}
+  BOX_LOAD_MATERIAL_WITH_MATERIAL TNN=T2A
+{elsif next_extruder == 3}
+  BOX_LOAD_MATERIAL_WITH_MATERIAL TNN=T2B
+{endif}
+```
+### 3. Hardware Calibration (Zero-Y Mount)
+If you are using a Zero-Y offset mount:
 
-| Command | Description |
-| :--- | :--- |
-| `MAP_ALL_SPOOLS` | Opens a UI pop-up to map all 4 slots in one go. |
-| `STATUS_SPOOL_MAP` | Displays current CFS-to-Spoolman assignments in the console. |
-| `CLEAR_CFS_SPOOLS` | Resets all active mappings to 0. |
+Z-Offset: Live-adjust your Z-offset during your first test print. Once perfected, run SAVE_CONFIG in the console.
 
----
+PTFE Slack: Ensure the PTFE tube leading from the CFS to the toolhead has enough slack to prevent the tube from pulling on the toolhead at the front of the bed, which can cause Z-offset inconsistencies.
 
-## ⚠️ Disclaimer & Safety
-* **Physical Slack:** Ensure the PTFE tube leading from the CFS to the toolhead has a sufficient arc. If the tube is too short, it can physically lift the toolhead during high-speed movement, causing inconsistent Z-offsets and "phantom" first-layer issues.
-* **Macro Conflict:** This config uses `SELECT_T` macros because the K1 firmware locks the default `T0-T3` commands. Attempting to rename them to standard `T` commands will trigger a firmware halt (`Key 167`).
+Command,Description
+MAP_ALL_SPOOLS,"Manually assign Spoolman IDs to CFS slots (e.g., MAP_ALL_SPOOLS SLOT0=12 SLOT1=5)."
+STATUS_SPOOL_MAP,Prints the current CFS-to-Spoolman ID assignments in the console.
+SYNC_SPOOLMAN,Manually triggers an active spool update in the Spoolman database for a specific slot.
+CLEAR_CFS_SPOOLS,Resets all slot assignments to 0.
 
----
+🤝 Credits & Acknowledgments
+Guilouz - Creality K1 Series Helper Script
 
-## 🤝 Credits & Acknowledgments
-This project is built upon the incredible work of the 3D printing community:
+Donkie - Spoolman
 
-* **[Guilouz - Creality K1 Series Helper Script](https://github.com/Guilouz/Creality-K1-Series-Helper-Script)** - For the rooting foundations and base CFS logic.
-* **[Donkie - Spoolman](https://github.com/Donkie/Spoolman)** - For the essential filament inventory database.
-* **[kageiit - KAMP](https://github.com/kageiit/Klipper-Adaptive-Mesh-Purging)** - For the intelligent leveling and purging system.
-* **[Creality](https://github.com/CrealityOfficial)** - For the K1 Max and CFS hardware platforms.
+kageiit - KAMP
 
----
+Creality Official Klipper Repo
 
-### 🚀 Happy Printing!
-If this configuration helped you get your CFS running smoothly, please consider leaving a ⭐ on this repository!
+🚀 Status: Feature Complete & Stable
+The "Key 60" error is resolved by moving tool-change logic from Klipper macros to the Slicer's conditional G-code.
+
